@@ -583,13 +583,13 @@ CONTAINS
                   & FIELD_VECTOR_DIMENSION_TYPE,ERR,ERROR,*999)
                 CALL FIELD_DATA_TYPE_SET_AND_LOCK(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
                   & FIELD_DP_TYPE,ERR,ERROR,*999)
-                !Set the number of materials components
+                !Set the number of materials components (2)
                 CALL FIELD_NUMBER_OF_COMPONENTS_SET_AND_LOCK(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
-                  & 3,ERR,ERROR,*999)
-                !Default the 3 materials components to the first geometric interpolation setup with constant interpolation
+                  & 2,ERR,ERROR,*999)
+                !Default the 2 materials components to the first geometric interpolation setup with constant interpolation
                 CALL FIELD_COMPONENT_MESH_COMPONENT_GET(EQUATIONS_SET%GEOMETRY%GEOMETRIC_FIELD,FIELD_U_VARIABLE_TYPE, &
                   & 1,GEOMETRIC_COMPONENT_NUMBER,ERR,ERROR,*999)
-                DO component_idx=1,3
+                DO component_idx=1,1
                   CALL FIELD_COMPONENT_MESH_COMPONENT_SET(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
                     & component_idx,GEOMETRIC_COMPONENT_NUMBER,ERR,ERROR,*999)
                   CALL FIELD_COMPONENT_INTERPOLATION_SET(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
@@ -623,10 +623,7 @@ CONTAINS
                 !Default component 1 (viscosity) 
                 CALL FIELD_COMPONENT_VALUES_INITIALISE(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
                   & FIELD_VALUES_SET_TYPE,1,0.005_DP,ERR,ERROR,*999)
-                !Default component 2 (radius) 
-                CALL FIELD_COMPONENT_VALUES_INITIALISE(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
-                  & FIELD_VALUES_SET_TYPE,2,0.5_DP,ERR,ERROR,*999)
-                !Default component 3 (length) 
+                !Default component 2 (density) 
                 CALL FIELD_COMPONENT_VALUES_INITIALISE(EQUATIONS_MATERIALS%MATERIALS_FIELD,FIELD_U_VARIABLE_TYPE, &
                   & FIELD_VALUES_SET_TYPE,3,1.0_DP,ERR,ERROR,*999)
               ENDIF
@@ -678,7 +675,7 @@ CONTAINS
         CASE(EQUATIONS_SET_SETUP_EQUATIONS_TYPE)
           SELECT CASE(EQUATIONS_SET_SETUP%ACTION_TYPE)
           CASE(EQUATIONS_SET_SETUP_START_ACTION)
-            IF(EQUATIONS_SET%DEPENDENT%DEPENDENT_FINISHED) THEN
+            IF(EQUATIONS_SET%DEPENDENT%DEPENDENT_FINISHED)THEN
               !Create the equations
               CALL EQUATIONS_CREATE_START(EQUATIONS_SET,EQUATIONS,ERR,ERROR,*999)
               CALL EQUATIONS_LINEARITY_TYPE_SET(EQUATIONS,EQUATIONS_LINEAR,ERR,ERROR,*999)
